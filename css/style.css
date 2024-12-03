@@ -1,0 +1,23 @@
+.lights {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.light-column {
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+}
+
+.light {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: black;
+    margin: 5px;
+}
+
+.light.active {
+    background-color: red;
+}
