@@ -179,5 +179,5 @@ document.getElementById("backToMenuBtn").addEventListener("click", () => {
     window.location.href = "index.html";
 });
 
-// Start gry
+// Start gry 
 resetGame();
