@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drunk Pigeon</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #70c5ce;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            background: #70c5ce;
+            border: 2px solid black;
+        }
+        .game-over {
+            position: absolute;
+            top: 20px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-over" id="gameOverMessage" style="display: none;">Crash! Press Space to Restart</div>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <script src="js/drunkpigeon.js"></script>
+</body>
+</html>
