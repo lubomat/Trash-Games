@@ -11,7 +11,7 @@ const pigeon = {
     y: canvasHeight / 2,
     width: 30,
     height: 30,
-    gravity: 0.03, // Wolniejsze opadanie
+    gravity: 0.025, // Wolniejsze opadanie
     lift: -1.5,     // Mocniejszy podskok
     velocity: 0,
 };
