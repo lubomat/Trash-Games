@@ -117,8 +117,8 @@ function updateObstacles() {
 
         // Kolizja z Marian
         if (
-            marian.x + 5 < obstacle.x + obstacleWidth - 5 &&
-            marian.x + marian.width - 5 > obstacle.x + 5 &&
+            marian.x + 7 < obstacle.x + obstacleWidth - 7 &&
+            marian.x + marian.width - 7 > obstacle.x + 7 &&
             marian.y + 5 < obstacle.y + obstacleHeight - 5 &&
             marian.y + marian.height - 5 > obstacle.y + 5
         ) {
@@ -177,11 +177,17 @@ function loop() {
     distance = Math.floor(gameSpeedTimer / 10);
 
     // Zwiększ tempo gry co 10 sekund
+    // if (gameSpeedTimer % 600 === 0) {
+    //     obstacleSpeed += 0.3; // Zwiększ prędkość przeszkód
+    //     backgroundSpeed += 0.1; // Zwiększ prędkość tła
+    //     obstacleSpawnRate = Math.max(180, obstacleSpawnRate - 10); // Zmniejsz czas między przeszkodami
+    // }
     if (gameSpeedTimer % 600 === 0) {
         obstacleSpeed += 0.3; // Zwiększ prędkość przeszkód
         backgroundSpeed += 0.1; // Zwiększ prędkość tła
-        obstacleSpawnRate = Math.max(180, obstacleSpawnRate - 10); // Zmniejsz czas między przeszkodami
+        obstacleSpawnRate = Math.max(60, obstacleSpawnRate - 5); // Minimalna przerwa: 60 klatek
     }
+    
 
     gameSpeedTimer++;
     requestAnimationFrame(loop);
