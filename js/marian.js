@@ -36,7 +36,7 @@ let score = 0;
 let distance = 0; // Liczba przebytych metrów
 let gameSpeedTimer = 0; // Licznik czasu do zwiększania tempa
 
-// Obrazki
+// Obrazki przeszkód
 const marianImage = new Image();
 marianImage.src = "assets/character/Marianprzezroczysty.png";
 
@@ -45,6 +45,9 @@ obstacleImage.src = "assets/obstacles/kupa.png";
 
 const badObstacleImage = new Image();
 badObstacleImage.src = "assets/obstacles/zlakupa.png";
+
+const obstacleImage2 = new Image();
+obstacleImage2.src = "assets/obstacles/kupa2.png";
 
 // Funkcja resetująca grę
 function resetGame() {
@@ -73,7 +76,14 @@ function drawMarian() {
 // Rysowanie przeszkód
 function drawObstacles() {
     obstacles.forEach((obstacle) => {
-        const image = obstacle.type === "bad" ? badObstacleImage : obstacleImage;
+        let image;
+        if (obstacle.type === "bad") {
+            image = badObstacleImage; // zlakupa po 1000 m
+        } else if (obstacle.type === "dangerous") {
+            image = obstacleImage2; // kupa2 po 2000 m
+        } else {
+            image = obstacleImage; // domyślnie kupa
+        }
         ctx.drawImage(image, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
     });
 }
@@ -81,11 +91,18 @@ function drawObstacles() {
 // Aktualizacja przeszkód
 function updateObstacles() {
     if (gameSpeedTimer % obstacleSpawnRate === 0) {
-        const isBadObstacle = distance >= 500; // Po 500 metrach użyjemy zlakupa.png
+        let obstacleType = "normal"; // Domyślny typ przeszkody
+
+        if (distance >= 2000) {
+            obstacleType = "dangerous"; // Zmieniamy na kupa2 po 2000 m
+        } else if (distance >= 1000) {
+            obstacleType = "bad"; // Zmieniamy na zlakupa po 1000 m
+        }
+
         obstacles.push({
             x: canvasWidth,
             y: 300,
-            type: isBadObstacle ? "bad" : "normal", // Typ przeszkody
+            type: obstacleType, // Typ przeszkody
         });
     }
 
@@ -98,16 +115,15 @@ function updateObstacles() {
             score++;
         }
 
-        // Kolizja z Marian (zmniejszenie bounding boxów)
-    if (
-        marian.x + 5 < obstacle.x + obstacleWidth - 5 &&
-        marian.x + marian.width - 5 > obstacle.x + 5 &&
-        marian.y + 5 < obstacle.y + obstacleHeight - 5 &&
-        marian.y + marian.height - 5 > obstacle.y + 5
-    ) {
-        endGame();
-}
-
+        // Kolizja z Marian
+        if (
+            marian.x + 5 < obstacle.x + obstacleWidth - 5 &&
+            marian.x + marian.width - 5 > obstacle.x + 5 &&
+            marian.y + 5 < obstacle.y + obstacleHeight - 5 &&
+            marian.y + marian.height - 5 > obstacle.y + 5
+        ) {
+            endGame();
+        }
     });
 }
 
