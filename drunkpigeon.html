@@ -9,8 +9,9 @@
             margin: 0;
             background-color: #70c5ce;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             overflow: hidden;
         }
@@ -19,19 +20,41 @@
             background: #70c5ce;
             border: 2px solid black;
         }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        #backToMenuBtn {
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #f44336; /* Kolor jak na zdjęciu */
+            color: white;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            text-align: center;
+        }
+        #backToMenuBtn:hover {
+            background-color: #e53935; /* Delikatny ciemniejszy efekt po najechaniu */
+        }
         .game-over {
-            position: absolute;
-            top: 20px;
             font-size: 24px;
             font-family: Arial, sans-serif;
             color: white;
             text-shadow: 2px 2px 4px black;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <div class="game-over" id="gameOverMessage" style="display: none;">Crash! Press Space to Restart</div>
     <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <div class="controls">
+        <button id="backToMenuBtn">Powrót do listy gier</button>
+    </div>
     <script src="js/drunkpigeon.js"></script>
 </body>
 </html>

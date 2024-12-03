@@ -156,5 +156,10 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
+// Obsługa przycisków
+document.getElementById("backToMenuBtn").addEventListener("click", () => {
+    window.location.href = "index.html";
+});
+
 // Start gry
 loop();
