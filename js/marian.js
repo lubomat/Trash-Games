@@ -117,8 +117,8 @@ function updateObstacles() {
 
         // Kolizja z Marian
         if (
-            marian.x + 7 < obstacle.x + obstacleWidth - 7 &&
-            marian.x + marian.width - 7 > obstacle.x + 7 &&
+            marian.x + 8 < obstacle.x + obstacleWidth - 8 &&
+            marian.x + marian.width - 8 > obstacle.x + 8 &&
             marian.y + 5 < obstacle.y + obstacleHeight - 5 &&
             marian.y + marian.height - 5 > obstacle.y + 5
         ) {
