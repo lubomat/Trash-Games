@@ -145,16 +145,25 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-// Obsługa klawiatury
+// Obsługa klawiatury i dotyku
 document.addEventListener("keydown", (e) => {
     if (e.code === "ArrowUp" || e.code === "Space") {
-        if (isGameOver) {
-            resetGame();
-        } else {
-            pigeon.velocity = pigeon.lift; // Podskok gołębia
-        }
+        handleJump();
     }
 });
+
+canvas.addEventListener("touchstart", () => {
+    handleJump();
+});
+
+// Funkcja obsługująca skok
+function handleJump() {
+    if (isGameOver) {
+        resetGame();
+    } else {
+        pigeon.velocity = pigeon.lift; // Podskok gołębia
+    }
+}
 
 // Obsługa przycisków
 document.getElementById("backToMenuBtn").addEventListener("click", () => {
