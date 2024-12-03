@@ -12,19 +12,19 @@ const marian = {
     width: 40,
     height: 40,
     velocityY: 0,
-    gravity: 0.2, // Zmniejszona grawitacja
-    baseJumpPower: 6, // Startowa moc skoku
-    maxJumpPower: 14, // Maksymalna moc skoku przy długim przytrzymaniu
+    gravity: 0.1, // Zmniejszona grawitacja
+    jumpPower: 6, // Moc pojedynczego skoku
+    maxJumps: 2, // Maksymalna liczba skoków
+    jumpCount: 0, // Licznik wykonanych skoków
     isJumping: false,
-    jumpHoldTime: 0, // Czas przytrzymania skoku
 };
 
 // Przeszkody
 const obstacles = [];
 const obstacleWidth = 40;
 const obstacleHeight = 40;
-let obstacleSpeed = 1; // Startowe tempo przeszkód (wolniejsze)
-let obstacleSpawnRate = 180; // Czas między przeszkodami w klatkach
+let obstacleSpeed = 0.7; // Startowe tempo przeszkód
+let obstacleSpawnRate = 200; // Czas między przeszkodami w klatkach
 
 // Tło
 let backgroundX = 0;
@@ -33,6 +33,7 @@ let backgroundSpeed = 0.8; // Wolniejsze przesuwanie tła
 // Wynik i status gry
 let isGameOver = false;
 let score = 0;
+let distance = 0; // Liczba przebytych metrów
 let gameSpeedTimer = 0; // Licznik czasu do zwiększania tempa
 
 // Obrazki
@@ -47,10 +48,10 @@ function resetGame() {
     marian.x = 50;
     marian.y = 300;
     marian.velocityY = 0;
-    marian.isJumping = false;
-    marian.jumpHoldTime = 0;
+    marian.jumpCount = 0;
     isGameOver = false;
     score = 0;
+    distance = 0;
     obstacles.length = 0;
     obstacleSpeed = 1; // Reset tempa przeszkód
     obstacleSpawnRate = 180; // Reset częstotliwości przeszkód
@@ -104,35 +105,30 @@ function updateObstacles() {
     });
 }
 
-// Rysowanie tła
-function drawBackground() {
+// Rysowanie tła i licznika metrów
+function drawBackgroundAndUI() {
     ctx.fillStyle = "#5CAD67";
     ctx.fillRect(0, 300, canvasWidth, canvasHeight - 300); // Trawa
     ctx.fillStyle = "#D2691E";
     ctx.fillRect(0, 340, canvasWidth, canvasHeight - 340); // Ziemia
+
+    // Licznik metrów
+    ctx.fillStyle = "white";
+    ctx.font = "18px Arial";
+    ctx.fillText(`Distance: ${distance} m`, 10, 20);
 
     backgroundX -= backgroundSpeed;
 }
 
 // Ruch Marian
 function updateMarian() {
-    if (marian.isJumping && marian.jumpHoldTime > 0) {
-        // Skok zależny od czasu przytrzymania
-        const jumpPower = Math.min(
-            marian.baseJumpPower + marian.jumpHoldTime / 10,
-            marian.maxJumpPower
-        );
-        marian.velocityY = -jumpPower;
-        marian.jumpHoldTime = 0; // Reset czasu przytrzymania po skoku
-    }
-
     marian.velocityY += marian.gravity;
     marian.y += marian.velocityY;
 
     if (marian.y + marian.height > 340) {
         marian.y = 340 - marian.height;
-        marian.isJumping = false;
         marian.velocityY = 0;
+        marian.jumpCount = 0; // Reset licznika skoków po lądowaniu
     }
 }
 
@@ -148,12 +144,15 @@ function loop() {
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-    drawBackground();
+    drawBackgroundAndUI();
     updateMarian();
     drawMarian();
 
     updateObstacles();
     drawObstacles();
+
+    // Aktualizacja przebytych metrów
+    distance = Math.floor(gameSpeedTimer / 10);
 
     // Zwiększ tempo gry co 10 sekund
     if (gameSpeedTimer % 600 === 0) {
@@ -168,25 +167,9 @@ function loop() {
 
 // Obsługa klawiatury
 document.addEventListener("keydown", (e) => {
-    if (e.code === "ArrowUp") {
-        if (!marian.isJumping) {
-            marian.isJumping = true;
-        }
-        marian.jumpHoldTime++; // Zwiększ licznik przytrzymania
-    }
-});
-
-document.addEventListener("keyup", (e) => {
-    if (e.code === "ArrowUp") {
-        if (marian.isJumping) {
-            const jumpPower = Math.min(
-                marian.baseJumpPower + marian.jumpHoldTime / 10,
-                marian.maxJumpPower
-            );
-            marian.velocityY = -jumpPower; // Skok po puszczeniu klawisza
-        }
-        marian.isJumping = false; // Reset stanu skoku
-        marian.jumpHoldTime = 0; // Reset licznika
+    if (e.code === "ArrowUp" && marian.jumpCount < marian.maxJumps) {
+        marian.velocityY = -marian.jumpPower;
+        marian.jumpCount++; // Zwiększ licznik skoków
     }
 });
 
