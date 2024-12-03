@@ -7,6 +7,10 @@ let food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random(
 let direction = null; // Kierunek ruchu
 let score = 0;
 
+// Przycisk "Start Again"
+const restartBtn = document.getElementById('restartBtn');
+const backToMenuBtn = document.getElementById('backToMenuBtn');
+
 // Rysowanie elementów
 function draw() {
     // Czyścimy planszę
@@ -48,16 +52,14 @@ function moveSnake() {
 
     // Sprawdzamy, czy wąż uderzył w ścianę
     if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height) {
-        alert('Game Over!');
-        resetGame();
+        endGame();
         return;
     }
 
     // Sprawdzamy, czy wąż uderzył w siebie
     for (let segment of snake) {
         if (head.x === segment.x && head.y === segment.y) {
-            alert('Game Over!');
-            resetGame();
+            endGame();
             return;
         }
     }
@@ -76,12 +78,21 @@ function moveSnake() {
     draw();
 }
 
+// Funkcja kończąca grę
+function endGame() {
+    alert('Game Over!');
+    direction = null; // Zatrzymujemy węża
+    restartBtn.style.display = 'inline-block'; // Pokazujemy przycisk "Start Again"
+}
+
 // Funkcja resetująca grę
 function resetGame() {
     snake = [{ x: 10 * box, y: 10 * box }];
     direction = null;
     score = 0;
     food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
+    restartBtn.style.display = 'none'; // Ukrywamy przycisk "Start Again"
+    draw();
 }
 
 // Obsługa klawiatury
@@ -90,6 +101,15 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
     if (e.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
     if (e.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+});
+
+// Obsługa przycisków
+restartBtn.addEventListener('click', () => {
+    resetGame();
+});
+
+backToMenuBtn.addEventListener('click', () => {
+    window.location.href = 'index.html'; // Przejście na stronę główną
 });
 
 // Uruchamiamy grę

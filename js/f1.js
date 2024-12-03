@@ -89,3 +89,7 @@ startButton.addEventListener('click', (e) => {
     e.stopPropagation(); // Zapobiegamy rejestrowaniu kliknięcia jako fałszywego kliknięcia w grze
     startLightsSequence();
 });
+
+backToMenuBtn.addEventListener('click', () => {
+    window.location.href = 'index.html'; // Przejście na stronę główną
+});

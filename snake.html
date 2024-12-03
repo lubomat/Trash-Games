@@ -19,12 +19,36 @@
             font-size: 20px;
             font-weight: bold;
         }
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        #restartBtn {
+            background-color: #4CAF50;
+            color: white;
+            display: none; /* Start Again widoczny tylko po Game Over */
+        }
+        #backToMenuBtn {
+            background-color: #d9534f;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <h1>Snake Game</h1>
     <div class="score">Score: <span id="score">0</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div class="controls">
+        <button id="restartBtn">Try again</button>
+        <button id="backToMenuBtn">Back to game list</button>
+    </div>
     <script src="js/snake.js"></script>
 </body>
 </html>
