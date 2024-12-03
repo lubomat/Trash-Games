@@ -8,7 +8,7 @@ const canvasHeight = canvas.height;
 // Marian
 const marian = {
     x: 50,
-    y: 300,
+    y: 235, // Dopasowanie wysokości do oryginalnego tła
     width: 40,
     height: 40,
     velocityY: 0,
@@ -52,7 +52,7 @@ obstacleImage2.src = "assets/obstacles/kupa2.png";
 // Funkcja resetująca grę
 function resetGame() {
     marian.x = 50;
-    marian.y = 300;
+    marian.y = 220; // Reset wysokości postaci
     marian.velocityY = 0;
     marian.jumpCount = 0;
     isGameOver = false;
@@ -101,7 +101,7 @@ function updateObstacles() {
 
         obstacles.push({
             x: canvasWidth,
-            y: 300,
+            y: 235, // Wysokość przeszkód dopasowana do tła
             type: obstacleType, // Typ przeszkody
         });
     }
@@ -129,11 +129,7 @@ function updateObstacles() {
 
 // Rysowanie tła i licznika metrów
 function drawBackgroundAndUI() {
-    ctx.fillStyle = "#5CAD67";
-    ctx.fillRect(0, 300, canvasWidth, canvasHeight - 300); // Trawa
-    ctx.fillStyle = "#D2691E";
-    ctx.fillRect(0, 340, canvasWidth, canvasHeight - 340); // Ziemia
-
+    // Usunięte zielone i brązowe pasy
     // Licznik metrów
     ctx.fillStyle = "white";
     ctx.font = "18px Arial";
@@ -147,10 +143,10 @@ function updateMarian() {
     marian.velocityY += marian.gravity;
     marian.y += marian.velocityY;
 
-    if (marian.y + marian.height > 340) {
-        marian.y = 340 - marian.height;
+    if (marian.y + marian.height > 275) { // Dopasowanie do brązowego obszaru tła
+        marian.y = 275 - marian.height;
         marian.velocityY = 0;
-        marian.jumpCount = 0; // Reset licznika skoków po lądowaniu
+        marian.jumpCount = 0; // Reset liczby skoków
     }
 }
 
@@ -177,17 +173,11 @@ function loop() {
     distance = Math.floor(gameSpeedTimer / 10);
 
     // Zwiększ tempo gry co 10 sekund
-    // if (gameSpeedTimer % 600 === 0) {
-    //     obstacleSpeed += 0.3; // Zwiększ prędkość przeszkód
-    //     backgroundSpeed += 0.1; // Zwiększ prędkość tła
-    //     obstacleSpawnRate = Math.max(180, obstacleSpawnRate - 10); // Zmniejsz czas między przeszkodami
-    // }
     if (gameSpeedTimer % 600 === 0) {
         obstacleSpeed += 0.3; // Zwiększ prędkość przeszkód
         backgroundSpeed += 0.1; // Zwiększ prędkość tła
         obstacleSpawnRate = Math.max(60, obstacleSpawnRate - 5); // Minimalna przerwa: 60 klatek
     }
-    
 
     gameSpeedTimer++;
     requestAnimationFrame(loop);
