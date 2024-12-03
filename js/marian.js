@@ -24,7 +24,7 @@ const obstacles = [];
 const obstacleWidth = 40;
 const obstacleHeight = 40;
 let obstacleSpeed = 0.7; // Startowe tempo przeszkód
-let obstacleSpawnRate = 200; // Czas między przeszkodami w klatkach
+let obstacleSpawnRate = 300; // Większe przerwy między przeszkodami
 
 // Tło
 let backgroundX = 0;
@@ -38,10 +38,13 @@ let gameSpeedTimer = 0; // Licznik czasu do zwiększania tempa
 
 // Obrazki
 const marianImage = new Image();
-marianImage.src = "assets/character/Marianpostac.png";
+marianImage.src = "assets/character/Marianprzezroczysty.png";
 
 const obstacleImage = new Image();
-obstacleImage.src = "assets/obstacles/przeszkoda1.png";
+obstacleImage.src = "assets/obstacles/kupa.png";
+
+const badObstacleImage = new Image();
+badObstacleImage.src = "assets/obstacles/zlakupa.png";
 
 // Funkcja resetująca grę
 function resetGame() {
@@ -54,7 +57,7 @@ function resetGame() {
     distance = 0;
     obstacles.length = 0;
     obstacleSpeed = 1; // Reset tempa przeszkód
-    obstacleSpawnRate = 180; // Reset częstotliwości przeszkód
+    obstacleSpawnRate = 300; // Reset częstotliwości przeszkód
     backgroundSpeed = 0.8; // Reset prędkości tła
     gameSpeedTimer = 0;
     backgroundX = 0;
@@ -70,17 +73,19 @@ function drawMarian() {
 // Rysowanie przeszkód
 function drawObstacles() {
     obstacles.forEach((obstacle) => {
-        ctx.drawImage(obstacleImage, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
+        const image = obstacle.type === "bad" ? badObstacleImage : obstacleImage;
+        ctx.drawImage(image, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
     });
 }
 
 // Aktualizacja przeszkód
 function updateObstacles() {
     if (gameSpeedTimer % obstacleSpawnRate === 0) {
-        // Co obstacleSpawnRate klatek dodajemy przeszkodę
+        const isBadObstacle = distance >= 500; // Po 500 metrach użyjemy zlakupa.png
         obstacles.push({
             x: canvasWidth,
             y: 300,
+            type: isBadObstacle ? "bad" : "normal", // Typ przeszkody
         });
     }
 
@@ -93,15 +98,16 @@ function updateObstacles() {
             score++;
         }
 
-        // Kolizja z Marian
-        if (
-            marian.x < obstacle.x + obstacleWidth &&
-            marian.x + marian.width > obstacle.x &&
-            marian.y < obstacle.y + obstacleHeight &&
-            marian.y + marian.height > obstacle.y
-        ) {
-            endGame();
-        }
+        // Kolizja z Marian (zmniejszenie bounding boxów)
+    if (
+        marian.x + 5 < obstacle.x + obstacleWidth - 5 &&
+        marian.x + marian.width - 5 > obstacle.x + 5 &&
+        marian.y + 5 < obstacle.y + obstacleHeight - 5 &&
+        marian.y + marian.height - 5 > obstacle.y + 5
+    ) {
+        endGame();
+}
+
     });
 }
 
@@ -158,7 +164,7 @@ function loop() {
     if (gameSpeedTimer % 600 === 0) {
         obstacleSpeed += 0.3; // Zwiększ prędkość przeszkód
         backgroundSpeed += 0.1; // Zwiększ prędkość tła
-        obstacleSpawnRate = Math.max(120, obstacleSpawnRate - 10); // Zmniejsz czas między przeszkodami
+        obstacleSpawnRate = Math.max(180, obstacleSpawnRate - 10); // Zmniejsz czas między przeszkodami
     }
 
     gameSpeedTimer++;
@@ -179,5 +185,5 @@ document.getElementById("backToMenuBtn").addEventListener("click", () => {
     window.location.href = "index.html";
 });
 
-// Start gry 
+// Start gry
 resetGame();
