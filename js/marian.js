@@ -146,7 +146,7 @@ function updateMarian() {
     if (marian.y + marian.height > 275) { // Dopasowanie do brązowego obszaru tła
         marian.y = 275 - marian.height;
         marian.velocityY = 0;
-        marian.jumpCount = 0; // Reset liczby skoków
+        marian.jumpCount = 0; // Reset liczby skoków po lądowaniu
     }
 }
 
@@ -185,7 +185,7 @@ function loop() {
 
 // Obsługa klawiatury
 document.addEventListener("keydown", (e) => {
-    if (e.code === "ArrowUp" || e.code === "Space" && marian.jumpCount < marian.maxJumps) {
+    if ((e.code === "ArrowUp" || e.code === "Space") && marian.jumpCount < marian.maxJumps) {
         marian.velocityY = -marian.jumpPower;
         marian.jumpCount++; // Zwiększ licznik skoków
     }
