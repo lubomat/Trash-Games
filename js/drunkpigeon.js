@@ -20,8 +20,8 @@ pigeon.image.src = "assets/character/drunkpigeon.png"; // Ścieżka do obrazu go
 
 // Przeszkody
 const pipes = [];
-const pipeWidth = 50;
-const pipeGap = 150; // Szersze szczeliny
+const pipeWidth = 45;
+const pipeGap = 160; // Szersze szczeliny
 let pipeSpeed = 1;   // Mniejsza prędkość startowa
 
 // Ładowanie obrazu rury
@@ -32,7 +32,7 @@ pipeImage.src = "assets/obstacles/rura.png"; // Ścieżka do obrazu rury
 let isGameOver = false;
 let score = 0;
 let frameCounter = 0;
-const pipeFrequency = 150; // Odstęp między przeszkodami (w klatkach)
+const pipeFrequency = 195; // Odstęp między przeszkodami (w klatkach)
 
 // Funkcja resetująca grę
 function resetGame() {
