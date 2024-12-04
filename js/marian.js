@@ -129,7 +129,6 @@ function updateObstacles() {
 
 // Rysowanie tła i licznika metrów
 function drawBackgroundAndUI() {
-    // Usunięte zielone i brązowe pasy
     // Licznik metrów
     ctx.fillStyle = "white";
     ctx.font = "18px Arial";
@@ -188,6 +187,14 @@ document.addEventListener("keydown", (e) => {
     if ((e.code === "ArrowUp" || e.code === "Space") && marian.jumpCount < marian.maxJumps) {
         marian.velocityY = -marian.jumpPower;
         marian.jumpCount++; // Zwiększ licznik skoków
+    }
+});
+
+// Obsługa dotyku
+canvas.addEventListener("touchstart", () => {
+    if (marian.jumpCount < marian.maxJumps) {
+        marian.velocityY = -marian.jumpPower;
+        marian.jumpCount++;
     }
 });
 
