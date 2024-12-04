@@ -33,6 +33,7 @@ let isGameOver = false;
 let score = 0;
 let frameCounter = 0;
 const pipeFrequency = 195; // Odstęp między przeszkodami (w klatkach)
+let awaitingRestart = false; // Flaga oczekiwania na restart
 
 // Funkcja resetująca grę
 function resetGame() {
@@ -43,6 +44,7 @@ function resetGame() {
     frameCounter = 0;
     pipeSpeed = 1; // Reset prędkości przeszkód
     isGameOver = false;
+    awaitingRestart = false; // Reset flagi restartu
     document.getElementById("gameOverMessage").style.display = "none";
     loop();
 }
@@ -121,12 +123,18 @@ function drawScore() {
 // Koniec gry
 function gameOver() {
     isGameOver = true;
-    document.getElementById("gameOverMessage").style.display = "block";
+
+    // Wyświetlenie okienka z wynikiem
+    setTimeout(() => {
+        alert(`Score: ${score}`);
+        gameOverMessage.style.display = "block";
+        awaitingRestart = true; // Ustawienie flagi oczekiwania na restart
+    }, 100); // Krótka przerwa przed wyświetleniem okienka
 }
 
 // Główna pętla gry
 function loop() {
-    if (isGameOver) return;
+    if (isGameOver || awaitingRestart) return;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -154,22 +162,25 @@ function loop() {
 
 // Obsługa klawiatury i dotyku
 document.addEventListener("keydown", (e) => {
-    if (e.code === "ArrowUp" || e.code === "Space") {
+    if ((e.code === "ArrowUp" || e.code === "Space") && awaitingRestart) {
+        resetGame();
+    } else if (e.code === "ArrowUp" || e.code === "Space") {
         handleJump();
     }
 });
 
 canvas.addEventListener("touchstart", () => {
-    handleJump();
+    if (awaitingRestart) {
+        resetGame();
+    } else {
+        handleJump();
+    }
 });
 
 // Funkcja obsługująca skok
 function handleJump() {
-    if (isGameOver) {
-        resetGame();
-    } else {
-        pigeon.velocity = pigeon.lift; // Podskok gołębia
-    }
+    if (isGameOver || awaitingRestart) return;
+    pigeon.velocity = pigeon.lift; // Podskok gołębia
 }
 
 // Obsługa przycisków
