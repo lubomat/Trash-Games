@@ -9,18 +9,24 @@ const canvasHeight = canvas.height;
 const pigeon = {
     x: 100,
     y: canvasHeight / 2,
-    width: 30,
-    height: 30,
+    width: 40, // Dostosowana szerokość
+    height: 40, // Dostosowana wysokość
     gravity: 0.025, // Wolniejsze opadanie
     lift: -1.5,     // Mocniejszy podskok
     velocity: 0,
+    image: new Image(), // Obraz gołębia
 };
+pigeon.image.src = "assets/character/drunkpigeon.png"; // Ścieżka do obrazu gołębia
 
 // Przeszkody
 const pipes = [];
 const pipeWidth = 50;
 const pipeGap = 150; // Szersze szczeliny
 let pipeSpeed = 1;   // Mniejsza prędkość startowa
+
+// Ładowanie obrazu rury
+const pipeImage = new Image();
+pipeImage.src = "assets/obstacles/rura.png"; // Ścieżka do obrazu rury
 
 // Wynik i status gry
 let isGameOver = false;
@@ -43,22 +49,23 @@ function resetGame() {
 
 // Rysowanie gracza (pijanego gołębia)
 function drawPigeon() {
-    ctx.fillStyle = "yellow";
-    ctx.fillRect(pigeon.x, pigeon.y, pigeon.width, pigeon.height);
+    ctx.drawImage(pigeon.image, pigeon.x, pigeon.y, pigeon.width, pigeon.height);
 }
 
 // Rysowanie przeszkód
 function drawPipes() {
-    ctx.fillStyle = "green";
     pipes.forEach(pipe => {
-        ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
-        ctx.fillRect(pipe.x, pipe.top + pipeGap, pipeWidth, canvasHeight - pipe.top - pipeGap);
+        // Rysowanie górnej rury
+        ctx.drawImage(pipeImage, pipe.x, 0, pipeWidth, pipe.top);
+
+        // Rysowanie dolnej rury
+        ctx.drawImage(pipeImage, pipe.x, pipe.top + pipeGap, pipeWidth, canvasHeight - pipe.top - pipeGap);
     });
 }
 
 // Dodawanie przeszkód
 function addPipe() {
-    const top = Math.random() * (canvasHeight / 2 - 50) + 20; // Krótsze przeszkody
+    const top = Math.random() * (canvasHeight / 2 - 50) + 20; // Losowa wysokość górnej rury
     pipes.push({ x: canvasWidth, top });
 }
 
