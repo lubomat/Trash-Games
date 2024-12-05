@@ -6,6 +6,7 @@ let snake = [{ x: 10 * box, y: 10 * box }]; // Wąż zaczyna z długością 1
 let food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box }; // Losowa pozycja jedzenia
 let direction = null; // Kierunek ruchu
 let score = 0;
+let isGameOver = false; // Flaga kontrolująca stan gry
 
 // Przycisk "Start Again"
 const restartBtn = document.getElementById('restartBtn');
@@ -31,6 +32,8 @@ function draw() {
 
 // Funkcja do poruszania węża
 function moveSnake() {
+    if (isGameOver) return; // Jeśli gra jest zakończona, wąż się nie porusza
+
     const head = { ...snake[0] };
 
     switch (direction) {
@@ -82,6 +85,7 @@ function moveSnake() {
 function endGame() {
     alert('Game Over!');
     direction = null; // Zatrzymujemy węża
+    isGameOver = true; // Ustawiamy flagę końca gry
     restartBtn.style.display = 'inline-block'; // Pokazujemy przycisk "Start Again"
 }
 
@@ -90,6 +94,7 @@ function resetGame() {
     snake = [{ x: 10 * box, y: 10 * box }];
     direction = null;
     score = 0;
+    isGameOver = false; // Resetujemy flagę końca gry
     food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
     restartBtn.style.display = 'none'; // Ukrywamy przycisk "Start Again"
     draw();
@@ -97,6 +102,8 @@ function resetGame() {
 
 // Obsługa klawiatury
 document.addEventListener('keydown', e => {
+    if (isGameOver) return; // Ignorujemy zdarzenia klawiatury, jeśli gra jest zakończona
+
     if (e.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
     if (e.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
     if (e.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
