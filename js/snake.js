@@ -5,12 +5,16 @@ const box = 20; // Rozmiar jednego segmentu węża
 let snake = [{ x: 10 * box, y: 10 * box }]; // Wąż zaczyna z długością 1
 let food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box }; // Losowa pozycja jedzenia
 let direction = null; // Kierunek ruchu
+let previousDirection = null; // Poprzedni kierunek ruchu
 let score = 0;
 let isGameOver = false; // Flaga kontrolująca stan gry
+let gameInterval = null; // Zmienna przechowująca interwał gry
+let speed = 200; // Początkowa prędkość gry
 
-// Przycisk "Start Again"
+// Elementy DOM
 const restartBtn = document.getElementById('restartBtn');
 const backToMenuBtn = document.getElementById('backToMenuBtn');
+const levelSelector = document.getElementById('levelSelector');
 
 // Rysowanie elementów
 function draw() {
@@ -53,6 +57,9 @@ function moveSnake() {
             return;
     }
 
+    // Aktualizujemy poprzedni kierunek
+    previousDirection = direction;
+
     // Sprawdzamy, czy wąż uderzył w ścianę
     if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height) {
         endGame();
@@ -83,6 +90,7 @@ function moveSnake() {
 
 // Funkcja kończąca grę
 function endGame() {
+    clearInterval(gameInterval); // Zatrzymujemy interwał
     alert('Game Over!');
     direction = null; // Zatrzymujemy węża
     isGameOver = true; // Ustawiamy flagę końca gry
@@ -91,23 +99,43 @@ function endGame() {
 
 // Funkcja resetująca grę
 function resetGame() {
+    clearInterval(gameInterval); // Zatrzymujemy interwał, jeśli istnieje
     snake = [{ x: 10 * box, y: 10 * box }];
     direction = null;
+    previousDirection = null;
     score = 0;
     isGameOver = false; // Resetujemy flagę końca gry
     food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
     restartBtn.style.display = 'none'; // Ukrywamy przycisk "Start Again"
+    setGameSpeed(); // Uruchamiamy grę z wybraną prędkością
     draw();
+}
+
+// Funkcja ustawiająca prędkość gry na podstawie wybranego poziomu trudności
+function setGameSpeed() {
+    clearInterval(gameInterval); // Czyścimy poprzedni interwał
+    const level = levelSelector.value;
+
+    if (level === 'easy') {
+        speed = 200;
+    } else if (level === 'medium') {
+        speed = 100;
+    } else if (level === 'mutant') {
+        speed = 50;
+    }
+
+    gameInterval = setInterval(moveSnake, speed);
 }
 
 // Obsługa klawiatury
 document.addEventListener('keydown', e => {
     if (isGameOver) return; // Ignorujemy zdarzenia klawiatury, jeśli gra jest zakończona
 
-    if (e.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
-    if (e.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
-    if (e.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
-    if (e.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+    // Blokada zawracania węża
+    if (e.key === 'ArrowUp' && previousDirection !== 'DOWN') direction = 'UP';
+    if (e.key === 'ArrowDown' && previousDirection !== 'UP') direction = 'DOWN';
+    if (e.key === 'ArrowLeft' && previousDirection !== 'RIGHT') direction = 'LEFT';
+    if (e.key === 'ArrowRight' && previousDirection !== 'LEFT') direction = 'RIGHT';
 });
 
 // Obsługa przycisków
@@ -119,6 +147,6 @@ backToMenuBtn.addEventListener('click', () => {
     window.location.href = 'index.html'; // Przejście na stronę główną
 });
 
-// Uruchamiamy grę
-setInterval(moveSnake, 200); // Ruch co 200ms
+// Uruchamiamy grę na początkowym poziomie trudności
+setGameSpeed();
 draw();
