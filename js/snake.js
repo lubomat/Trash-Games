@@ -13,7 +13,7 @@ let speed = 200; // Początkowa prędkość gry
 
 // Ładowanie grafiki tła
 const backgroundImage = new Image();
-backgroundImage.src = 'assets/background/trawa.png';
+backgroundImage.src = 'assets/background/trawa2.png';
 
 // Ładowanie grafiki głowy węża
 const headImage = new Image();
@@ -76,7 +76,7 @@ function draw() {
 
 // Funkcja do poruszania węża
 function moveSnake() {
-    if (isGameOver) return; // Jeśli gra jest zakończona, wąż się nie porusza
+    if (isGameOver || direction === null) return; // Jeśli gra jest zakończona lub nie rozpoczęła się, wąż się nie porusza
 
     const head = { ...snake[0] };
 
@@ -147,7 +147,6 @@ function resetGame() {
     isGameOver = false; // Resetujemy flagę końca gry
     food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
     restartBtn.style.display = 'none'; // Ukrywamy przycisk "Start Again"
-    setGameSpeed(); // Uruchamiamy grę z wybraną prędkością
     draw();
 }
 
@@ -171,6 +170,11 @@ function setGameSpeed() {
 document.addEventListener('keydown', e => {
     if (isGameOver) return; // Ignorujemy zdarzenia klawiatury, jeśli gra jest zakończona
 
+    if (!direction) {
+        // Jeśli gra nie wystartowała, startujemy grę
+        setGameSpeed();
+    }
+
     // Blokada zawracania węża
     if (e.key === 'ArrowUp' && previousDirection !== 'DOWN') direction = 'UP';
     if (e.key === 'ArrowDown' && previousDirection !== 'UP') direction = 'DOWN';
@@ -187,6 +191,5 @@ backToMenuBtn.addEventListener('click', () => {
     window.location.href = 'index.html'; // Przejście na stronę główną
 });
 
-// Uruchamiamy grę na początkowym poziomie trudności
-setGameSpeed();
+// Rysujemy początkowy stan gry
 draw();
