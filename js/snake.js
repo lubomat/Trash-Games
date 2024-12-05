@@ -11,6 +11,10 @@ let isGameOver = false; // Flaga kontrolująca stan gry
 let gameInterval = null; // Zmienna przechowująca interwał gry
 let speed = 200; // Początkowa prędkość gry
 
+// Ładowanie grafiki tła
+const backgroundImage = new Image();
+backgroundImage.src = 'assets/background/trawa.png';
+
 // Ładowanie grafiki głowy węża
 const headImage = new Image();
 headImage.src = 'assets/character/wegorz.png';
@@ -30,9 +34,8 @@ const levelSelector = document.getElementById('levelSelector');
 
 // Funkcja rysowania
 function draw() {
-    // Czyścimy planszę
-    ctx.fillStyle = '#a2d149';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Rysujemy tło gry
+    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
     // Rysujemy ciało węża
     snake.slice(1).forEach(segment => {
