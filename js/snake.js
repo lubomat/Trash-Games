@@ -13,10 +13,11 @@ let score = 0;
 let isGameOver = false; // Flaga kontrolująca stan gry
 let gameInterval = null; // Zmienna przechowująca interwał gry
 let speed = 200; // Początkowa prędkość gry
+let showStartText = true; // Flaga do kontrolowania wyświetlania tekstu startowego
 
 // Ładowanie grafiki tła
 const backgroundImage = new Image();
-backgroundImage.src = 'assets/background/trawa2.png';
+backgroundImage.src = 'assets/background/trawa3.png';
 
 // Ładowanie grafiki głowy węża
 const headImage = new Image();
@@ -72,6 +73,21 @@ function draw() {
 
     // Rysujemy jedzenie
     ctx.drawImage(foodImage, food.x, food.y, box, box);
+
+    // Wyświetlamy tekst startowy, jeśli gra jeszcze się nie rozpoczęła
+    if (showStartText) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        ctx.fillRect(50, canvas.height / 2 - 30, canvas.width - 100, 60);
+
+        ctx.fillStyle = 'white';
+        ctx.font = '20px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(
+            'Select a level and use your keyboard to start',
+            canvas.width / 2,
+            canvas.height / 2 + 5
+        );
+    }
 
     // Rysujemy wynik
     document.getElementById('score').textContent = score;
@@ -149,7 +165,7 @@ function resetGame() {
     score = 0;
     isGameOver = false; // Resetujemy flagę końca gry
     food = { x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box };
-    restartBtn.style.display = 'none'; // Ukrywamy przycisk "Start Again"
+    showStartText = true; // Przywracamy tekst startowy
     draw();
 }
 
@@ -174,7 +190,8 @@ document.addEventListener('keydown', e => {
     if (isGameOver) return; // Ignorujemy zdarzenia klawiatury, jeśli gra jest zakończona
 
     if (!direction) {
-        // Jeśli gra nie wystartowała, startujemy grę
+        // Jeśli gra nie wystartowała, startujemy grę i usuwamy tekst startowy
+        showStartText = false;
         setGameSpeed();
     }
 
