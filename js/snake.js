@@ -11,20 +11,49 @@ let isGameOver = false; // Flaga kontrolująca stan gry
 let gameInterval = null; // Zmienna przechowująca interwał gry
 let speed = 200; // Początkowa prędkość gry
 
+// Ładowanie grafiki głowy węża
+const headImage = new Image();
+headImage.src = 'assets/character/wegorz.png';
+
 // Elementy DOM
 const restartBtn = document.getElementById('restartBtn');
 const backToMenuBtn = document.getElementById('backToMenuBtn');
 const levelSelector = document.getElementById('levelSelector');
 
-// Rysowanie elementów
+// Funkcja rysowania
 function draw() {
     // Czyścimy planszę
     ctx.fillStyle = '#a2d149';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Rysujemy węża
+    // Rysujemy ciało węża
     ctx.fillStyle = '#000';
-    snake.forEach(segment => ctx.fillRect(segment.x, segment.y, box, box));
+    snake.slice(1).forEach(segment => ctx.fillRect(segment.x, segment.y, box, box));
+
+    // Rysujemy głowę węża
+    const head = snake[0];
+    ctx.save(); // Zapisujemy aktualny stan kontekstu
+    ctx.translate(head.x + box / 2, head.y + box / 2); // Przesuwamy układ współrzędnych na środek głowy
+
+    switch (direction) {
+        case 'UP':
+            ctx.rotate(Math.PI); // Obrót o 180 stopni (z dołu na górę)
+            break;
+        case 'DOWN':
+            // Domyślnie, brak obrotu (głowa węża skierowana w dół w oryginalnym obrazku)
+            break;
+        case 'LEFT':
+            ctx.rotate(Math.PI / 2); // Obrót o 90 stopni (z dołu na lewo)
+            break;
+        case 'RIGHT':
+            ctx.rotate((Math.PI * 3) / 2); // Obrót o 270 stopni (z dołu na prawo)
+            break;
+        default:
+            break;
+    }
+
+    ctx.drawImage(headImage, -box / 2, -box / 2, box, box); // Rysujemy głowę w odpowiednim kierunku
+    ctx.restore(); // Przywracamy poprzedni stan kontekstu
 
     // Rysujemy jedzenie
     ctx.fillStyle = '#d9534f';
@@ -33,6 +62,7 @@ function draw() {
     // Rysujemy wynik
     document.getElementById('score').textContent = score;
 }
+
 
 // Funkcja do poruszania węża
 function moveSnake() {
