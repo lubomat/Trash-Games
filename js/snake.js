@@ -19,6 +19,10 @@ headImage.src = 'assets/character/wegorz.png';
 const bodyImage = new Image();
 bodyImage.src = 'assets/character/tulow.png';
 
+// Ładowanie grafiki jedzenia
+const foodImage = new Image();
+foodImage.src = 'assets/obstacles/pilka.png';
+
 // Elementy DOM
 const restartBtn = document.getElementById('restartBtn');
 const backToMenuBtn = document.getElementById('backToMenuBtn');
@@ -61,8 +65,7 @@ function draw() {
     ctx.restore(); // Przywracamy poprzedni stan kontekstu
 
     // Rysujemy jedzenie
-    ctx.fillStyle = '#d9534f';
-    ctx.fillRect(food.x, food.y, box, box);
+    ctx.drawImage(foodImage, food.x, food.y, box, box);
 
     // Rysujemy wynik
     document.getElementById('score').textContent = score;
