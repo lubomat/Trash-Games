@@ -1,7 +1,10 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const box = 20; // Rozmiar jednego segmentu węża
+const box = 30; // Rozmiar jednego segmentu węża (zwiększony z 20 do 30)
+canvas.width = 600; // Szerokość canvas
+canvas.height = 600; // Wysokość canvas
+
 let snake = [{ x: 10 * box, y: 10 * box }]; // Wąż zaczyna z długością 1
 let food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box }; // Losowa pozycja jedzenia
 let direction = null; // Kierunek ruchu
@@ -120,7 +123,7 @@ function moveSnake() {
     // Sprawdzamy, czy wąż zjadł jedzenie
     if (head.x === food.x && head.y === food.y) {
         score++;
-        food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box }; // Nowe jedzenie
+        food = { x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box }; // Nowe jedzenie
     } else {
         snake.pop(); // Usuwamy ostatni segment węża, jeśli nie zjadł jedzenia
     }
@@ -145,7 +148,7 @@ function resetGame() {
     previousDirection = null;
     score = 0;
     isGameOver = false; // Resetujemy flagę końca gry
-    food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
+    food = { x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box };
     restartBtn.style.display = 'none'; // Ukrywamy przycisk "Start Again"
     draw();
 }
@@ -192,4 +195,4 @@ backToMenuBtn.addEventListener('click', () => {
 });
 
 // Rysujemy początkowy stan gry
-draw();
+resetGame();
