@@ -15,6 +15,10 @@ let speed = 200; // Początkowa prędkość gry
 const headImage = new Image();
 headImage.src = 'assets/character/wegorz.png';
 
+// Ładowanie grafiki segmentu ciała węża
+const bodyImage = new Image();
+bodyImage.src = 'assets/character/tulow.png';
+
 // Elementy DOM
 const restartBtn = document.getElementById('restartBtn');
 const backToMenuBtn = document.getElementById('backToMenuBtn');
@@ -27,8 +31,9 @@ function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Rysujemy ciało węża
-    ctx.fillStyle = '#000';
-    snake.slice(1).forEach(segment => ctx.fillRect(segment.x, segment.y, box, box));
+    snake.slice(1).forEach(segment => {
+        ctx.drawImage(bodyImage, segment.x, segment.y, box, box); // Rysujemy segment ciała
+    });
 
     // Rysujemy głowę węża
     const head = snake[0];
@@ -62,7 +67,6 @@ function draw() {
     // Rysujemy wynik
     document.getElementById('score').textContent = score;
 }
-
 
 // Funkcja do poruszania węża
 function moveSnake() {
