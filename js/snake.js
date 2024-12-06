@@ -1,9 +1,9 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const box = 30; // Rozmiar jednego segmentu węża (zwiększony z 20 do 30)
-canvas.width = 600; // Szerokość canvas
-canvas.height = 600; // Wysokość canvas
+const box = 25; // Rozmiar jednego segmentu węża (zwiększony z 20 do 30)
+canvas.width = 500; // Szerokość canvas
+canvas.height = 500; // Wysokość canvas
 
 let snake = [{ x: 10 * box, y: 10 * box }]; // Wąż zaczyna z długością 1
 let food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box }; // Losowa pozycja jedzenia
@@ -17,7 +17,7 @@ let showStartText = true; // Flaga do kontrolowania wyświetlania tekstu startow
 
 // Ładowanie grafiki tła
 const backgroundImage = new Image();
-backgroundImage.src = 'assets/background/trawa3.png';
+backgroundImage.src = 'assets/background/trawa4.png';
 
 // Ładowanie grafiki głowy węża
 const headImage = new Image();
