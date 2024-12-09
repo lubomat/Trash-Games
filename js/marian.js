@@ -49,7 +49,6 @@ badObstacleImage.src = "assets/obstacles/zlakupa.png";
 const obstacleImage2 = new Image();
 obstacleImage2.src = "assets/obstacles/kupa2.png";
 
-// Funkcja resetująca grę
 function resetGame() {
     marian.x = 50;
     marian.y = 220; // Reset wysokości postaci
