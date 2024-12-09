@@ -8,14 +8,14 @@ const canvasHeight = canvas.height;
 // Marian
 const marian = {
     x: 50,
-    y: 235, // Dopasowanie wysokości do oryginalnego tła
+    y: 235,
     width: 40,
     height: 40,
     velocityY: 0,
-    gravity: 0.1, // Zmniejszona grawitacja
-    jumpPower: 6, // Moc pojedynczego skoku
-    maxJumps: 2, // Maksymalna liczba skoków
-    jumpCount: 0, // Licznik wykonanych skoków
+    gravity: 0.1,
+    jumpPower: 6,
+    maxJumps: 2,
+    jumpCount: 0,
     isJumping: false,
 };
 
@@ -23,18 +23,19 @@ const marian = {
 const obstacles = [];
 const obstacleWidth = 40;
 const obstacleHeight = 40;
-let obstacleSpeed = 0.7; // Startowe tempo przeszkód
-let obstacleSpawnRate = 300; // Większe przerwy między przeszkodami
+let obstacleSpeed = 0.7;
+let obstacleSpawnRate = 300;
 
 // Tło
 let backgroundX = 0;
-let backgroundSpeed = 0.8; // Wolniejsze przesuwanie tła
+let backgroundSpeed = 0.8;
 
 // Wynik i status gry
 let isGameOver = false;
+let isGameStarted = false; // Nowa zmienna kontrolująca stan gry
 let score = 0;
-let distance = 0; // Liczba przebytych metrów
-let gameSpeedTimer = 0; // Licznik czasu do zwiększania tempa
+let distance = 0;
+let gameSpeedTimer = 0;
 
 // Obrazki przeszkód
 const marianImage = new Image();
@@ -49,22 +50,32 @@ badObstacleImage.src = "assets/obstacles/zlakupa.png";
 const obstacleImage2 = new Image();
 obstacleImage2.src = "assets/obstacles/kupa2.png";
 
+// Funkcja resetująca grę
 function resetGame() {
     marian.x = 50;
-    marian.y = 220; // Reset wysokości postaci
+    marian.y = 220;
     marian.velocityY = 0;
     marian.jumpCount = 0;
     isGameOver = false;
+    isGameStarted = false; // Reset stanu gry
     score = 0;
     distance = 0;
     obstacles.length = 0;
-    obstacleSpeed = 1; // Reset tempa przeszkód
-    obstacleSpawnRate = 300; // Reset częstotliwości przeszkód
-    backgroundSpeed = 0.8; // Reset prędkości tła
+    obstacleSpeed = 1;
+    obstacleSpawnRate = 300;
+    backgroundSpeed = 0.8;
     gameSpeedTimer = 0;
     backgroundX = 0;
-    document.getElementById("restartBtn").style.display = "none"; 
-    loop();
+    document.getElementById("restartBtn").style.display = "none";
+    showStartMessage(); // Wyświetlenie napisu startowego
+}
+
+function showStartMessage() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.fillStyle = "white";
+    ctx.font = "24px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("Use Up arrow to jump. Double click = double jump", canvasWidth / 2, canvasHeight / 2);
 }
 
 // Rysowanie Marian
@@ -77,11 +88,11 @@ function drawObstacles() {
     obstacles.forEach((obstacle) => {
         let image;
         if (obstacle.type === "bad") {
-            image = badObstacleImage; // zlakupa po 1000 m
+            image = badObstacleImage;
         } else if (obstacle.type === "dangerous") {
-            image = obstacleImage2; // kupa2 po 2000 m
+            image = obstacleImage2;
         } else {
-            image = obstacleImage; // domyślnie kupa
+            image = obstacleImage;
         }
         ctx.drawImage(image, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
     });
@@ -90,31 +101,29 @@ function drawObstacles() {
 // Aktualizacja przeszkód
 function updateObstacles() {
     if (gameSpeedTimer % obstacleSpawnRate === 0) {
-        let obstacleType = "normal"; // Domyślny typ przeszkody
+        let obstacleType = "normal";
 
         if (distance >= 2000) {
-            obstacleType = "dangerous"; // Zmieniamy na kupa2 po 2000 m
+            obstacleType = "dangerous";
         } else if (distance >= 1000) {
-            obstacleType = "bad"; // Zmieniamy na zlakupa po 1000 m
+            obstacleType = "bad";
         }
 
         obstacles.push({
             x: canvasWidth,
-            y: 235, // Wysokość przeszkód dopasowana do tła
-            type: obstacleType, // Typ przeszkody
+            y: 235,
+            type: obstacleType,
         });
     }
 
     obstacles.forEach((obstacle, index) => {
         obstacle.x -= obstacleSpeed;
 
-        // Usuwanie przeszkód poza ekranem
         if (obstacle.x + obstacleWidth < 0) {
             obstacles.splice(index, 1);
             score++;
         }
 
-        // Kolizja z Marian
         if (
             marian.x + 8 < obstacle.x + obstacleWidth - 8 &&
             marian.x + marian.width - 8 > obstacle.x + 8 &&
@@ -128,7 +137,6 @@ function updateObstacles() {
 
 // Rysowanie tła i licznika metrów
 function drawBackgroundAndUI() {
-    // Licznik metrów
     ctx.fillStyle = "white";
     ctx.font = "18px Arial";
     ctx.fillText(`Distance: ${distance} m`, 10, 20);
@@ -141,10 +149,10 @@ function updateMarian() {
     marian.velocityY += marian.gravity;
     marian.y += marian.velocityY;
 
-    if (marian.y + marian.height > 275) { // Dopasowanie do brązowego obszaru tła
+    if (marian.y + marian.height > 275) {
         marian.y = 275 - marian.height;
         marian.velocityY = 0;
-        marian.jumpCount = 0; // Reset liczby skoków po lądowaniu
+        marian.jumpCount = 0;
     }
 }
 
@@ -156,7 +164,7 @@ function endGame() {
 
 // Główna pętla gry
 function loop() {
-    if (isGameOver) return;
+    if (isGameOver || !isGameStarted) return;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -167,14 +175,12 @@ function loop() {
     updateObstacles();
     drawObstacles();
 
-    // Aktualizacja przebytych metrów
     distance = Math.floor(gameSpeedTimer / 10);
 
-    // Zwiększ tempo gry co 10 sekund
     if (gameSpeedTimer % 600 === 0) {
-        obstacleSpeed += 0.3; // Zwiększ prędkość przeszkód
-        backgroundSpeed += 0.1; // Zwiększ prędkość tła
-        obstacleSpawnRate = Math.max(60, obstacleSpawnRate - 5); // Minimalna przerwa: 60 klatek
+        obstacleSpeed += 0.3;
+        backgroundSpeed += 0.1;
+        obstacleSpawnRate = Math.max(60, obstacleSpawnRate - 5);
     }
 
     gameSpeedTimer++;
@@ -183,14 +189,26 @@ function loop() {
 
 // Obsługa klawiatury
 document.addEventListener("keydown", (e) => {
+    if (!isGameStarted) {
+        isGameStarted = true; // Rozpoczęcie gry po naciśnięciu klawisza
+        loop();
+        return;
+    }
+
     if ((e.code === "ArrowUp" || e.code === "Space") && marian.jumpCount < marian.maxJumps) {
         marian.velocityY = -marian.jumpPower;
-        marian.jumpCount++; // Zwiększ licznik skoków
+        marian.jumpCount++;
     }
 });
 
 // Obsługa dotyku
 canvas.addEventListener("touchstart", () => {
+    if (!isGameStarted) {
+        isGameStarted = true; // Rozpoczęcie gry po dotknięciu ekranu
+        loop();
+        return;
+    }
+
     if (marian.jumpCount < marian.maxJumps) {
         marian.velocityY = -marian.jumpPower;
         marian.jumpCount++;
