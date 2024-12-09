@@ -16,7 +16,7 @@ const pigeon = {
     velocity: 0,
     image: new Image(), // Obraz gołębia
 };
-pigeon.image.src = "assets/character/drunkpigeon.png"; // Ścieżka do obrazu gołębia
+pigeon.image.src = "assets/character/crazypigeon.png"; // Ścieżka do obrazu gołębia
 
 // Przeszkody
 const pipes = [];
