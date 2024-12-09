@@ -139,7 +139,7 @@ function loop() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     // Dodawanie przeszkód co określoną liczbę klatek
-    if (frameCounter % pipeFrequency === 0) {
+    if (frameCounter % pipeFrequency === 0) { 
         addPipe();
     }
 
