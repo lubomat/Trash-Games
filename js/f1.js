@@ -91,5 +91,5 @@ startButton.addEventListener('click', (e) => {
 });
 
 backToMenuBtn.addEventListener('click', () => {
-    window.location.href = 'index.html'; // Przejście na stronę główną
+    window.location.href = 'index.html'; 
 });
