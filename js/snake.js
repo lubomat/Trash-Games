@@ -56,7 +56,7 @@ function draw() {
             ctx.rotate(Math.PI); // Obrót o 180 stopni (z dołu na górę)
             break;
         case 'DOWN':
-            // Domyślnie, brak obrotu (głowa węża skierowana w dół w oryginalnym obrazku)
+            // Domyślnie, brak obrotu (głowa węża skierowana w dół w oryginalnym obrazku) 
             break;
         case 'LEFT':
             ctx.rotate(Math.PI / 2); // Obrót o 90 stopni (z dołu na lewo)
