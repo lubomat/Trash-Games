@@ -9,31 +9,32 @@ const canvasHeight = canvas.height;
 const pigeon = {
     x: 100,
     y: canvasHeight / 2,
-    width: 40, // Dostosowana szerokość
-    height: 40, // Dostosowana wysokość
-    gravity: 0.025, // Wolniejsze opadanie
-    lift: -1.5,     // Mocniejszy podskok
+    width: 40,
+    height: 40,
+    gravity: 0.025,
+    lift: -1.5,
     velocity: 0,
-    image: new Image(), // Obraz gołębia
+    image: new Image(),
 };
-pigeon.image.src = "assets/character/crazypigeon.png"; // Ścieżka do obrazu gołębia
+pigeon.image.src = "assets/character/crazypigeon.png";
 
 // Przeszkody
 const pipes = [];
 const pipeWidth = 45;
-const pipeGap = 160; // Szersze szczeliny
-let pipeSpeed = 1;   // Mniejsza prędkość startowa
+const pipeGap = 160;
+let pipeSpeed = 1;
 
 // Ładowanie obrazu rury
 const pipeImage = new Image();
-pipeImage.src = "assets/obstacles/rura.png"; // Ścieżka do obrazu rury
+pipeImage.src = "assets/obstacles/rura.png";
 
 // Wynik i status gry
 let isGameOver = false;
+let isGameStarted = false; // Flaga kontrolująca, czy gra została rozpoczęta
 let score = 0;
 let frameCounter = 0;
-const pipeFrequency = 195; // Odstęp między przeszkodami (w klatkach)
-let awaitingRestart = false; // Flaga oczekiwania na restart
+const pipeFrequency = 195;
+let awaitingRestart = false;
 
 // Funkcja resetująca grę
 function resetGame() {
@@ -42,14 +43,15 @@ function resetGame() {
     pipes.length = 0;
     score = 0;
     frameCounter = 0;
-    pipeSpeed = 1; // Reset prędkości przeszkód
+    pipeSpeed = 1;
     isGameOver = false;
-    awaitingRestart = false; // Reset flagi restartu
-    document.getElementById("gameOverMessage").style.display = "none";
-    loop();
+    awaitingRestart = false;
+    isGameStarted = false; // Gra jeszcze się nie rozpoczęła
+    document.getElementById("gameOverMessage").textContent = "Press Up or Space to fly";
+    document.getElementById("gameOverMessage").style.display = "block";
 }
 
-// Rysowanie gracza (pijanego gołębia)
+// Rysowanie gracza
 function drawPigeon() {
     ctx.drawImage(pigeon.image, pigeon.x, pigeon.y, pigeon.width, pigeon.height);
 }
@@ -57,17 +59,14 @@ function drawPigeon() {
 // Rysowanie przeszkód
 function drawPipes() {
     pipes.forEach(pipe => {
-        // Rysowanie górnej rury
         ctx.drawImage(pipeImage, pipe.x, 0, pipeWidth, pipe.top);
-
-        // Rysowanie dolnej rury
         ctx.drawImage(pipeImage, pipe.x, pipe.top + pipeGap, pipeWidth, canvasHeight - pipe.top - pipeGap);
     });
 }
 
 // Dodawanie przeszkód
 function addPipe() {
-    const top = Math.random() * (canvasHeight / 2 - 50) + 20; // Losowa wysokość górnej rury
+    const top = Math.random() * (canvasHeight / 2 - 50) + 20;
     pipes.push({ x: canvasWidth, top });
 }
 
@@ -77,19 +76,17 @@ function updatePipes() {
         pipe.x -= pipeSpeed;
     });
 
-    // Usuwanie przeszkód poza ekranem
     if (pipes.length && pipes[0].x + pipeWidth < 0) {
         pipes.shift();
         score++;
     }
 }
 
-// Aktualizacja gracza (pijanego gołębia)
+// Aktualizacja gracza
 function updatePigeon() {
     pigeon.velocity += pigeon.gravity;
     pigeon.y += pigeon.velocity;
 
-    // Zatrzymanie gołębia w obrębie ekranu
     if (pigeon.y + pigeon.height > canvasHeight) {
         pigeon.y = canvasHeight - pigeon.height;
         gameOver();
@@ -123,23 +120,18 @@ function drawScore() {
 // Koniec gry
 function gameOver() {
     isGameOver = true;
-
-    // Wyświetlenie okienka z wynikiem
-    setTimeout(() => {
-        alert(`Score: ${score}`);
-        gameOverMessage.style.display = "block";
-        awaitingRestart = true; // Ustawienie flagi oczekiwania na restart
-    }, 100); // Krótka przerwa przed wyświetleniem okienka
+    document.getElementById("gameOverMessage").textContent = "Crash! Press Up or Space to fly";
+    document.getElementById("gameOverMessage").style.display = "block";
+    awaitingRestart = true;
 }
 
 // Główna pętla gry
 function loop() {
-    if (isGameOver || awaitingRestart) return;
+    if (isGameOver || !isGameStarted) return;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
     // Dodawanie przeszkód co określoną liczbę klatek
-    if (frameCounter % pipeFrequency === 0) { 
+    if (frameCounter % pipeFrequency === 0) {
         addPipe();
     }
 
@@ -153,7 +145,7 @@ function loop() {
 
     // Zwiększanie trudności gry z czasem
     if (frameCounter % 1000 === 0) {
-        pipeSpeed += 0.2; // Zwiększenie prędkości przeszkód
+        pipeSpeed += 0.2;
     }
 
     frameCounter++;
@@ -164,6 +156,10 @@ function loop() {
 document.addEventListener("keydown", (e) => {
     if ((e.code === "ArrowUp" || e.code === "Space") && awaitingRestart) {
         resetGame();
+    } else if (!isGameStarted && (e.code === "ArrowUp" || e.code === "Space")) {
+        isGameStarted = true;
+        document.getElementById("gameOverMessage").style.display = "none"; // Ukryj napis
+        loop();
     } else if (e.code === "ArrowUp" || e.code === "Space") {
         handleJump();
     }
@@ -172,6 +168,10 @@ document.addEventListener("keydown", (e) => {
 canvas.addEventListener("touchstart", () => {
     if (awaitingRestart) {
         resetGame();
+    } else if (!isGameStarted) {
+        isGameStarted = true;
+        document.getElementById("gameOverMessage").style.display = "none";
+        loop();
     } else {
         handleJump();
     }
@@ -180,7 +180,7 @@ canvas.addEventListener("touchstart", () => {
 // Funkcja obsługująca skok
 function handleJump() {
     if (isGameOver || awaitingRestart) return;
-    pigeon.velocity = pigeon.lift; // Podskok gołębia
+    pigeon.velocity = pigeon.lift;
 }
 
 // Obsługa przycisków
@@ -189,4 +189,4 @@ document.getElementById("backToMenuBtn").addEventListener("click", () => {
 });
 
 // Start gry
-loop();
+resetGame();
