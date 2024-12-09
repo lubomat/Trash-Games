@@ -38,7 +38,4 @@ If you want to run the games locally:
 
 ## Project Structure
 
-index.html - Main page with game selection.
-js/ - Folder containing JavaScript files for each game.
-assets/ - Folder for game assets and graphics.
-css/ - Folder with style sheets.
+├── index.html # Main page with game selection ├── js/ # Contains JavaScript files for each game │ ├── f1.js # Logic for F1 Start Lights game │ ├── snake.js # Logic for Snake game │ ├── marian.js # Logic for Marian game │ └── drunkpigeon.js # Logic for Crazy Pigeon game ├── assets/ # Game assets and graphics │ ├── character/ # Character images │ ├── obstacles/ # Obstacle images │ └── background/ # Background images ├── css/ # Style sheets for games └── README.md # Documentation for the project
