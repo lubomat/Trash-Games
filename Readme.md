@@ -37,6 +37,20 @@ If you want to run the games locally:
 
 
 ## Project Structure
-The project is organized as follows:
 
-├── index.html # Main page with game selection ├── js/ # Contains JavaScript files for each game │ ├── f1.js # Logic for F1 Start Lights game │ ├── snake.js # Logic for Snake game │ ├── marian.js # Logic for Marian game │ └── drunkpigeon.js # Logic for Crazy Pigeon game ├── assets/ # Game assets and graphics │ ├── character/ # Character images │ ├── obstacles/ # Obstacle images │ └── background/ # Background images ├── css/ # Style sheets for games └── README.md # Documentation for the project
+- **index.html** - Main page with game selection
+- **f1.html** - HTML file for F1 Start Lights game
+- **snake.html** - HTML file for Snake game
+- **marian.html** - HTML file for Marian game
+- **crazypigeon.html** - HTML file for Crazy Pigeon game
+- **js/** - Contains JavaScript files for each game
+  - **f1.js** - Logic for F1 Start Lights game
+  - **snake.js** - Logic for Snake game
+  - **marian.js** - Logic for Marian game
+  - **crazypigeon.js** - Logic for Crazy Pigeon game
+- **assets/** - Game assets and graphics
+  - **character/** - Character images
+  - **obstacles/** - Obstacle images
+  - **background/** - Background images
+- **css/** - Style sheets for games
+- **README.md** - Project documentation
