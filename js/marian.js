@@ -64,7 +64,7 @@ function resetGame() {
     backgroundSpeed = 0.8; // Reset prędkości tła
     gameSpeedTimer = 0;
     backgroundX = 0;
-    document.getElementById("restartBtn").style.display = "none";
+    document.getElementById("restartBtn").style.display = "none"; 
     loop();
 }
 
