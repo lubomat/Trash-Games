@@ -75,7 +75,7 @@ function showStartMessage() {
     ctx.fillStyle = "white";
     ctx.font = "24px Arial";
     ctx.textAlign = "center";
-    ctx.fillText("Use Up arrow to jump. Double click = double jump", canvasWidth / 2, canvasHeight / 2);
+    ctx.fillText("Use UpArrow to jump. Double click = double jump", canvasWidth / 2, canvasHeight / 2);
 }
 
 // Rysowanie Marian
@@ -139,6 +139,7 @@ function updateObstacles() {
 function drawBackgroundAndUI() {
     ctx.fillStyle = "white";
     ctx.font = "18px Arial";
+    ctx.textAlign = "left";
     ctx.fillText(`Distance: ${distance} m`, 10, 20);
 
     backgroundX -= backgroundSpeed;
