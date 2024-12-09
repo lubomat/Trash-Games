@@ -27,15 +27,6 @@ The project is available online at:
 
 You can play the games instantly without any installation!
 
-## Installation (Optional)
-If you want to run the games locally:
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/lubomat/Trash-Games.git
-
-2. Open the index.html file in your browser.
-
-
 ## Project Structure
 
 - **index.html** - Main page with game selection
@@ -54,3 +45,11 @@ If you want to run the games locally:
   - **background/** - Background images
 - **css/** - Style sheets for games
 - **README.md** - Project documentation
+
+## Installation (Optional)
+If you want to run the games locally:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/lubomat/Trash-Games.git
+
+2. Open the index.html file in your browser.
