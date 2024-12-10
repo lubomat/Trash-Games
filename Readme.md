@@ -1,5 +1,11 @@
 # Canvas Games Collection
 
+## Play Online
+The project is available online at:  
+[Trash Games](https://trash-games.onrender.com/)
+
+You can play the games instantly without any installation!
+
 ## Project Description
 This is a web application featuring four interactive games built with JavaScript and Canvas technology. These games are designed to entertain and challenge players.
 
@@ -21,11 +27,6 @@ The project was built using:
 - **JavaScript (ES6)** - To implement game logic and interactivity.
 - **Canvas API** - For rendering 2D graphics in the browser.
 
-## Play Online
-The project is available online at:  
-[Trash Games](https://trash-games.onrender.com/)
-
-You can play the games instantly without any installation!
 
 ## Project Structure
 
