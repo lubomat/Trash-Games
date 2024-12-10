@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+canvas {
+    background-color: #a2d149;
+    border: 5px solid #000;
+    display: block;
+    margin: 20px auto;
+}
+.score {
+    font-size: 20px;
+    font-weight: bold;
+}
+.controls {
+    margin-top: 20px;
+}
+button {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+#restartBtn {
+    background-color: #4CAF50;
+    color: white;
+    display: none; /* Start Again widoczny tylko po Game Over */
+}
+#backToMenuBtn {
+    background-color: #d9534f;
+    color: white;
+}
+.difficulty {
+    margin-top: 10px;
+}
+select {
+    font-size: 16px;
+    padding: 5px 10px;
+}
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}

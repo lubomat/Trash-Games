@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+}
+.game-icon {
+    display: inline-block;
+    margin: 20px;
+    padding: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #4CAF50;
+    border-radius: 10px;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+}
+.game-icon:hover {
+    background-color: #45a049;
+}
